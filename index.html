@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <title>For My Lablab ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script:wght@400;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -18,6 +18,7 @@ body{
   overflow-x:hidden;
 }
 
+/* soft glow */
 h1,h2,p,div{
   text-shadow:0 0 12px rgba(255,200,200,.55);
 }
@@ -43,6 +44,7 @@ h1,h2,p,div{
   animation:float 6s linear infinite;
   opacity:.7;
   pointer-events:none;
+  z-index:1;
 }
 @keyframes float{
   to{transform:translateY(-110vh);opacity:0}
@@ -54,87 +56,131 @@ h1,h2,p,div{
   position:relative;
   z-index:2;
 }
+.valentine-title{
+  font-family:'Great Vibes', cursive;
+  font-size:clamp(3.2rem,8vw,4.6rem);
+  margin-bottom:10px;
+  position:relative;
+  animation:heartGlow 2.5s infinite ease-in-out;
+}
+@keyframes heartGlow{
+  0%{ text-shadow:0 0 10px rgba(255,154,162,.9); }
+  50%{ text-shadow:0 0 32px rgba(255,77,109,.95); }
+  100%{ text-shadow:0 0 10px rgba(255,154,162,.9); }
+}
 .title h1{
   font-family:'Great Vibes',cursive;
-  font-size:clamp(3rem,7vw,4.2rem);
+  font-size:clamp(2.4rem,6vw,3.4rem);
+  margin:0;
 }
 
-/* Paper Letter */
+/* Paper letter card */
 .paper-wrap{
-  width:min(720px,92vw);
-  margin:10px auto 30px;
-  z-index:2;
   position:relative;
+  z-index:2;
+  width:min(760px,92vw);
+  margin:16px auto 40px;
+  padding:18px;
 }
 
 .paper{
   background:linear-gradient(180deg,#fff7f7,#fff);
   color:#7a0000;
-  border-radius:24px;
-  padding:28px 24px;
-  box-shadow:0 16px 35px rgba(0,0,0,.35), 0 0 35px rgba(255,160,160,.35);
+  border-radius:22px;
+  padding:26px 22px;
+  box-shadow:
+    0 16px 35px rgba(0,0,0,.35),
+    0 0 35px rgba(255,160,160,.35);
+  position:relative;
+  overflow:hidden;
 }
 
+/* subtle paper lines */
 .paper:before{
   content:"";
   position:absolute;
   inset:0;
-  background:repeating-linear-gradient(
-    to bottom,
-    rgba(255,180,180,.18),
-    rgba(255,180,180,.18) 1px,
-    transparent 1px,
-    transparent 26px
-  );
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,180,180,.18),
+      rgba(255,180,180,.18) 1px,
+      transparent 1px,
+      transparent 26px
+    );
   pointer-events:none;
 }
 
 .ribbon{
+  width:100%;
   height:10px;
   background:linear-gradient(90deg,#ffb3b3,#ff6b6b,#ffb3b3);
   border-radius:999px;
   margin-bottom:16px;
+  box-shadow:0 0 18px rgba(255,120,120,.6);
 }
 
 .paper h2{
   font-family:'Great Vibes',cursive;
-  font-size:2.6rem;
-  margin-bottom:10px;
+  font-size:clamp(2rem,5.5vw,2.6rem);
+  margin:0 0 10px;
 }
 
+/* Handwritten feel + typewriter */
 .letter{
-  line-height:1.9;
-  font-size:1.05rem;
+  font-family:'Dancing Script', cursive;
+  font-size:clamp(1.05rem,4vw,1.25rem);
+  line-height:2;
   white-space:pre-wrap;
   text-shadow:none;
+  min-height:220px;
 }
 
+/* signature */
 .signature{
   margin-top:18px;
   font-family:'Great Vibes',cursive;
-  font-size:2rem;
+  font-size:clamp(1.6rem,5vw,2.1rem);
   color:#9b0000;
 }
 
-/* Admin */
+/* Admin toolbar */
 .adminbar{
   display:none;
-  margin-top:16px;
+  margin-top:14px;
   gap:10px;
   justify-content:center;
+  flex-wrap:wrap;
 }
 .adminbar button{
+  border:none;
   background:#8b0000;
   color:#fff;
-  border:none;
-  padding:10px 16px;
+  padding:10px 14px;
   border-radius:999px;
   cursor:pointer;
+  box-shadow:0 0 18px rgba(255,150,150,.35);
+}
+.smallhint{
+  font-size:.85rem;
+  opacity:.8;
+  margin-top:8px;
 }
 
-[contenteditable="true"]{
-  outline:2px dashed rgba(180,0,0,.4);
-  border-radius:10px;
+/* editable highlight */
+#editorArea[contenteditable="true"]{
+  outline:2px dashed rgba(180,0,0,.35);
+  border-radius:12px;
+  padding:10px;
+  background:rgba(255,230,230,.55);
+}
+#editorArea{
+  display:none;
+  font-family:'Dancing Script', cursive;
+  font-size:clamp(1.05rem,4vw,1.25rem);
+  line-height:2;
+  white-space:pre-wrap;
+  text-shadow:none;
 }
 </style>
 </head>
@@ -142,17 +188,42 @@ h1,h2,p,div{
 <body>
 
 <div class="title">
-  <h1>For Babuuu ❤️</h1>
+  <div class="valentine-title">Happy Valentine’s Day ❤️</div>
+  <h1>For Nerisa</h1>
 </div>
 
 <div class="paper-wrap">
   <div class="paper">
     <div class="ribbon"></div>
 
-    <h2>HAPPY VALENTINES DAY!!❤️💕</h2>
+    <h2>My Love Letter</h2>
 
-    <div id="mainMessage" class="letter" contenteditable="false">
-Hi my love Nerisa,
+    <!-- Viewer sees this (typewriter) -->
+    <div id="mainMessage" class="letter"></div>
+
+    <!-- Admin edit area -->
+    <div id="editorArea" contenteditable="false"></div>
+
+    <div class="signature">— From James</div>
+
+    <div class="adminbar" id="adminBar">
+      <button onclick="startEdit()">Edit</button>
+      <button onclick="saveMessage()">Save</button>
+      <button onclick="cancelEdit()">Cancel</button>
+      <button onclick="resetMessage()">Reset</button>
+    </div>
+
+    <div class="smallhint" id="viewerHint">(Read it slowly… 💗)</div>
+  </div>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_0e3a0c7d7b.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* ---------- MESSAGE CONTENT (GLOBAL IN CODE) ---------- */
+const DEFAULT_TEXT = `Hi my love Nerisa,
 
 Happy Valentine’s Day ❤️  
 Today, I just want to take this moment to tell you how special you truly are to me.
@@ -173,7 +244,7 @@ I’m proud of how you keep going, even when no one sees how hard it is.
 You inspire me in ways you may not even realize.
 
 If ever you feel lost, scared, or unsure, remember that you are never alone.  
-I am always here for you, to support you, to listen to you, and to believe in you when you can’t believe in yourself.
+I am always here for you — to support you, to listen to you, and to believe in you when you can’t believe in yourself.
 
 Thank you for choosing me.  
 Thank you for your patience, your love, and your understanding.  
@@ -185,43 +256,97 @@ You are my love.
 You are my peace.  
 You are the greatest girlfriend I could ever ask for.
 
-I love you so much, always. ❤️
-    </div>
+I love you so much, always. ❤️`;
 
-    <div class="signature">— From James</div>
+/* ---------- DOM ---------- */
+const mainMessage = document.getElementById("mainMessage");
+const editorArea = document.getElementById("editorArea");
+const adminBar = document.getElementById("adminBar");
+const viewerHint = document.getElementById("viewerHint");
+const bgMusic = document.getElementById("bgMusic");
 
-    <div class="adminbar" id="adminBar">
-      <button onclick="saveMessage()">Save</button>
-    </div>
-  </div>
-</div>
+let adminMode = false;
+let typingIndex = 0;
+let typingTimer = null;
 
-<script>
-const mainMessage=document.getElementById("mainMessage");
-const adminBar=document.getElementById("adminBar");
+/* ---------- LOAD MESSAGE (local override if admin saved on this device) ---------- */
+function getCurrentText(){
+  return localStorage.getItem("love_letter_text") || DEFAULT_TEXT;
+}
 
-// load saved edit (local)
-const saved=localStorage.getItem("love_letter");
-if(saved){mainMessage.innerText=saved}
+/* ---------- TYPEWRITER ---------- */
+function startTypewriter(){
+  stopTypewriter();
+  mainMessage.textContent = "";
+  const text = getCurrentText();
+  typingIndex = 0;
 
-// admin access
-document.addEventListener("keydown",e=>{
+  const speed = 22; // lower = faster
+  typingTimer = setInterval(()=>{
+    mainMessage.textContent += text.charAt(typingIndex);
+    typingIndex++;
+    if(typingIndex >= text.length){
+      stopTypewriter();
+    }
+  }, speed);
+}
+
+function stopTypewriter(){
+  if(typingTimer) clearInterval(typingTimer);
+  typingTimer = null;
+}
+
+/* ---------- ADMIN MODE ---------- */
+document.addEventListener("keydown", (e)=>{
   if(e.key.toLowerCase()==="a"){
-    const pass=prompt("Admin password:");
-    if(pass==="admin123"){
-      mainMessage.contentEditable="true";
-      adminBar.style.display="flex";
-      alert("Admin mode enabled");
+    const pass = prompt("Admin password:");
+    if(pass === "admin123"){
+      adminMode = true;
+      adminBar.style.display = "flex";
+      viewerHint.style.display = "none";
+      alert("Admin mode enabled!");
     }
   }
 });
 
-function saveMessage(){
-  localStorage.setItem("love_letter",mainMessage.innerText);
-  alert("Message saved on this device");
+function startEdit(){
+  if(!adminMode) return;
+  stopTypewriter();
+  editorArea.style.display = "block";
+  mainMessage.style.display = "none";
+  editorArea.contentEditable = "true";
+  editorArea.innerText = getCurrentText();
 }
 
-// effects
+function cancelEdit(){
+  if(!adminMode) return;
+  editorArea.contentEditable = "false";
+  editorArea.style.display = "none";
+  mainMessage.style.display = "block";
+  startTypewriter();
+}
+
+function saveMessage(){
+  if(!adminMode) return;
+  localStorage.setItem("love_letter_text", editorArea.innerText);
+  alert("Saved on this device/browser. If you want it global for everyone, change DEFAULT_TEXT in the code and commit to GitHub.");
+  cancelEdit();
+}
+
+function resetMessage(){
+  if(!adminMode) return;
+  if(!confirm("Reset to the original message?")) return;
+  localStorage.removeItem("love_letter_text");
+  cancelEdit();
+}
+
+/* ---------- MUSIC (tap-to-play for mobile) ---------- */
+window.addEventListener("click", ()=>{
+  bgMusic.volume = 0.15;
+  bgMusic.play().catch(()=>{});
+},{ once:true });
+
+/* ---------- FLOWERS + HEARTS ---------- */
 setInterval(()=>{
   const f=document.createElement("div");
   f.className="flower";
@@ -237,11 +362,30 @@ setInterval(()=>{
   h.className="heart";
   h.innerText="💗";
   h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(4+Math.random()*4)+"s";
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),8000);
 },800);
+
+/* ---------- SCROLL PETALS ---------- */
+let lastPetal = 0;
+window.addEventListener("scroll", ()=>{
+  const now = Date.now();
+  if(now - lastPetal < 250) return; // limit spam
+  lastPetal = now;
+
+  const p=document.createElement("div");
+  p.className="flower";
+  p.innerText="🌹";
+  p.style.left=Math.random()*100+"vw";
+  p.style.animationDuration=(3+Math.random()*3)+"s";
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),7000);
+});
+
+/* ---------- START ---------- */
+window.addEventListener("load", startTypewriter);
 </script>
 
 </body>
 </html>
-

@@ -77,9 +77,12 @@ h1{font-family:'Great Vibes',cursive; font-size:clamp(2.4rem,6vw,3.5rem); margin
 #secretText[contenteditable="true"]{outline:2px dashed #ff6666;padding:10px;}
 
 /* Admin Panel */
-.admin{display:none;background:#fff;color:#8b0000;max-width:500px;margin:20px auto;padding:20px;border-radius:15px;}
+.admin{display:none;background:#fff;color:#8b0000;max-width:520px;margin:20px auto;padding:20px;border-radius:15px;}
 .admin input,.admin textarea{width:100%;padding:10px;margin:6px 0;}
 .admin button{background:#8b0000;color:#fff;border:none;padding:10px 18px;border-radius:20px;cursor:pointer;}
+.admin .row{display:flex;gap:10px;flex-wrap:wrap}
+.admin .row button{flex:1}
+.smallhint{font-size:.85rem;opacity:.85;margin:6px 0 10px}
 </style>
 </head>
 
@@ -99,7 +102,7 @@ h1{font-family:'Great Vibes',cursive; font-size:clamp(2.4rem,6vw,3.5rem); margin
 </div>
 
 <div id="secretLetter" onclick="closeSecret()">
-  <div id="secretContent">
+  <div id="secretContent" onclick="event.stopPropagation()">
     <h2>For You ❤️</h2>
     <div id="secretText" contenteditable="false">
       No matter where life takes us, I hope you always remember this — someone believes in you deeply, quietly, and completely.
@@ -111,113 +114,185 @@ h1{font-family:'Great Vibes',cursive; font-size:clamp(2.4rem,6vw,3.5rem); margin
 <!-- Modal -->
 <div class="modal" id="modal" onclick="closeModal()">
   <div class="modal-content" onclick="event.stopPropagation()">
-    <img id="modalImg">
+    <img id="modalImg" alt="memory image">
     <h2 id="modalTitle"></h2>
     <p id="modalText"></p>
-    <button id="deleteBtn">Delete</button>
+    <button id="deleteBtn" onclick="deleteMemory()">Delete</button>
   </div>
 </div>
 
-<!-- Admin Panel -->
+<!-- Admin Panel (URL-based) -->
 <div class="admin" id="adminPanel">
   <h3>Admin Panel</h3>
-  <input type="file" id="imageInput" accept="image/*">
-  <input type="file" id="musicInput" accept="audio/*">
+  <div class="smallhint">
+    Upload your files to GitHub repo (images/ & music/) then paste the GitHub Pages URLs here.
+  </div>
+
+  <input type="text" id="imageUrlInput" placeholder="Image URL (required) — example: https://.../images/pic1.jpg">
+  <input type="text" id="musicUrlInput" placeholder="Music URL (optional) — example: https://.../music/song1.mp3">
+
   <input type="text" id="titleInput" placeholder="Memory title">
   <textarea id="textInput" placeholder="Letter / memory"></textarea>
-  <button id="addMemoryBtn">Add Memory</button>
+
+  <div class="row">
+    <button id="addMemoryBtn">Add Memory</button>
+    <button id="exportBtn">Export Memories (Copy)</button>
+  </div>
+  <div class="smallhint">
+    After exporting: paste the JSON into DEFAULT_MEMORIES in this file, commit to GitHub, then everyone sees it.
+  </div>
 </div>
 
 <audio id="musicPlayer"></audio>
 
 <script>
 // DOM references
-const gallery=document.getElementById("gallery");
-const modal=document.getElementById("modal");
-const modalImg=document.getElementById("modalImg");
-const modalTitle=document.getElementById("modalTitle");
-const modalText=document.getElementById("modalText");
-const deleteBtn=document.getElementById("deleteBtn");
-const imageInput=document.getElementById("imageInput");
-const musicInput=document.getElementById("musicInput");
-const titleInput=document.getElementById("titleInput");
-const textInput=document.getElementById("textInput");
-const addMemoryBtn=document.getElementById("addMemoryBtn");
-const secretText=document.getElementById("secretText");
-const saveSecretBtn=document.getElementById("saveSecretBtn");
+const gallery = document.getElementById("gallery");
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modalImg");
+const modalTitle = document.getElementById("modalTitle");
+const modalText = document.getElementById("modalText");
+const deleteBtn = document.getElementById("deleteBtn");
 
-let memories=JSON.parse(localStorage.getItem("memories"))||[];
-let adminMode=false,currentIndex=null;
-const pos=["pos1","pos2","pos3","pos4","pos5","pos6","pos7"];
+const imageUrlInput = document.getElementById("imageUrlInput");
+const musicUrlInput = document.getElementById("musicUrlInput");
+const titleInput = document.getElementById("titleInput");
+const textInput = document.getElementById("textInput");
+const addMemoryBtn = document.getElementById("addMemoryBtn");
+const exportBtn = document.getElementById("exportBtn");
 
-// render gallery
+const secretText = document.getElementById("secretText");
+const saveSecretBtn = document.getElementById("saveSecretBtn");
+const musicPlayer = document.getElementById("musicPlayer");
+
+/* ✅ GLOBAL MEMORIES: paste exported JSON here to make it visible to everyone */
+const DEFAULT_MEMORIES = [
+  // Example:
+  // {
+  //   img: "https://jamescarpio.github.io/valentine_site/images/pic1.jpg",
+  //   music: "https://jamescarpio.github.io/valentine_site/music/song1.mp3",
+  //   title: "First Memory",
+  //   text: "Your letter here..."
+  // }
+];
+
+// If local exists, use it; else use global defaults
+let memories = JSON.parse(localStorage.getItem("memories")) || DEFAULT_MEMORIES;
+
+let adminMode = false;
+let currentIndex = null;
+
+const pos = ["pos1","pos2","pos3","pos4","pos5","pos6","pos7"];
+
+/* Render gallery */
 function render(){
-  gallery.innerHTML="";
+  gallery.innerHTML = "";
   memories.slice(0,7).forEach((m,i)=>{
-    const img=document.createElement("img");
-    img.src=m.img; img.className=pos[i]; img.onclick=()=>openModal(i);
+    const img = document.createElement("img");
+    img.src = m.img;
+    img.className = pos[i];
+    img.onclick = ()=>openModal(i);
     gallery.appendChild(img);
   });
 }
 render();
 
-// modal
+/* Modal */
 function openModal(i){
-  const m=memories[i]; currentIndex=i;
-  modalImg.src=m.img; modalTitle.innerText=m.title; modalText.innerText=m.text;
-  modal.style.display="flex"; deleteBtn.style.display=adminMode?"block":"none";
-  if(m.music){document.getElementById("musicPlayer").src=m.music; document.getElementById("musicPlayer").play();}
+  const m = memories[i];
+  currentIndex = i;
+
+  modalImg.src = m.img;
+  modalTitle.innerText = m.title || "";
+  modalText.innerText = m.text || "";
+
+  modal.style.display = "flex";
+  deleteBtn.style.display = adminMode ? "inline-block" : "none";
+
+  if(m.music){
+    musicPlayer.src = m.music;
+    musicPlayer.play().catch(()=>{});
+  }
 }
-function closeModal(){modal.style.display="none"; document.getElementById("musicPlayer").pause();}
+
+function closeModal(){
+  modal.style.display = "none";
+  musicPlayer.pause();
+  musicPlayer.currentTime = 0;
+}
+
 function deleteMemory(){
+  if(!adminMode) return;
   if(confirm("Delete this memory?")){
-    memories.splice(currentIndex,1);
-    localStorage.setItem("memories",JSON.stringify(memories));
-    closeModal(); render();
+    memories.splice(currentIndex, 1);
+    localStorage.setItem("memories", JSON.stringify(memories));
+    closeModal();
+    render();
   }
 }
 
-// admin add memory
+/* Admin add memory (URL-based) */
 addMemoryBtn.addEventListener("click", ()=>{
-  const imgFile=imageInput.files[0];
-  if(!imgFile)return alert("Please select an image!");
-  const reader=new FileReader();
-  reader.onload=function(e){
-    const imgData=e.target.result;
-    const musicFile=musicInput.files[0];
-    if(musicFile){
-      const musicReader=new FileReader();
-      musicReader.onload=function(ev){ saveMemory(imgData,ev.target.result); }
-      musicReader.readAsDataURL(musicFile);
-    }else saveMemory(imgData,null);
-  }
-  reader.readAsDataURL(imgFile);
-});
-function saveMemory(imgData,musicData){
-  memories.push({img:imgData,music:musicData,title:titleInput.value,text:textInput.value});
-  localStorage.setItem("memories",JSON.stringify(memories));
+  const imgUrl = imageUrlInput.value.trim();
+  const musicUrl = musicUrlInput.value.trim();
+  const title = titleInput.value.trim();
+  const text = textInput.value.trim();
+
+  if(!imgUrl) return alert("Paste an IMAGE URL first.");
+
+  memories.push({
+    img: imgUrl,
+    music: musicUrl || null,
+    title: title || "Memory",
+    text: text || ""
+  });
+
+  localStorage.setItem("memories", JSON.stringify(memories));
   render();
-  imageInput.value=musicInput.value=titleInput.value=textInput.value="";
-  alert("Memory added successfully!");
+
+  imageUrlInput.value="";
+  musicUrlInput.value="";
+  titleInput.value="";
+  textInput.value="";
+  alert("Added locally! Click Export to make it global for everyone (paste into DEFAULT_MEMORIES + commit).");
+});
+
+/* Export memories */
+exportBtn.addEventListener("click", exportMemories);
+
+function exportMemories(){
+  const data = JSON.stringify(memories, null, 2);
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(data).then(()=>{
+      alert("Copied! Paste this into DEFAULT_MEMORIES in index.html, commit to GitHub.");
+    }).catch(()=>{
+      prompt("Copy this JSON:", data);
+    });
+  } else {
+    prompt("Copy this JSON:", data);
+  }
 }
 
-// secret letter
+/* Secret letter */
 function openSecret(){document.getElementById("secretLetter").style.display="flex";}
 function closeSecret(){document.getElementById("secretLetter").style.display="none";}
-saveSecretBtn.addEventListener("click",()=>{
-  localStorage.setItem("secretLetter",secretText.innerText);
-  alert("Secret letter saved!");
-});
-// load saved secret letter
-const savedSecret = localStorage.getItem("secretLetter");
-if(savedSecret){secretText.innerText=savedSecret;}
 
-// admin access
-document.addEventListener("keydown",e=>{
-  if(e.key==="a"){
-    const pass=prompt("Admin password:");
+saveSecretBtn.addEventListener("click", ()=>{
+  localStorage.setItem("secretLetter", secretText.innerText);
+  alert("Secret letter saved (local). If you want it global, edit the HTML text itself and commit.");
+});
+
+// load saved secret letter (local)
+const savedSecret = localStorage.getItem("secretLetter");
+if(savedSecret){ secretText.innerText = savedSecret; }
+
+/* Admin access */
+document.addEventListener("keydown", (e)=>{
+  if(e.key.toLowerCase()==="a"){
+    const pass = prompt("Admin password:");
     if(pass==="admin123"){
-      adminMode=true;
+      adminMode = true;
       document.getElementById("adminPanel").style.display="block";
       secretText.contentEditable="true";
       saveSecretBtn.style.display="inline-block";
@@ -226,26 +301,25 @@ document.addEventListener("keydown",e=>{
   }
 });
 
-// falling flowers
+/* Effects */
 setInterval(()=>{
-  const f=document.createElement("div");
+  const f = document.createElement("div");
   f.className="flower";
-  f.innerText=Math.random()>.5?"🌹":"🌸";
-  f.style.left=Math.random()*100+"vw";
-  f.style.animationDuration=4+Math.random()*4+"s";
+  f.innerText = Math.random()>.5 ? "🌹" : "🌸";
+  f.style.left = Math.random()*100 + "vw";
+  f.style.animationDuration = (4+Math.random()*4) + "s";
   document.body.appendChild(f);
-  setTimeout(()=>f.remove(),8000);
-},500);
+  setTimeout(()=>f.remove(), 8000);
+}, 500);
 
-// floating hearts
 setInterval(()=>{
-  const h=document.createElement("div");
+  const h = document.createElement("div");
   h.className="heart";
   h.innerText="💗";
-  h.style.left=Math.random()*100+"vw";
+  h.style.left = Math.random()*100 + "vw";
   document.body.appendChild(h);
-  setTimeout(()=>h.remove(),8000);
-},800);
+  setTimeout(()=>h.remove(), 8000);
+}, 800);
 </script>
 </body>
 </html>

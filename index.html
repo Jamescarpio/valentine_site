@@ -1,325 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <title>For My Lablab ❤️</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+
 body{
-  background:linear-gradient(to bottom,#4a0000,#7a0000,#b30000);
+  background:linear-gradient(to bottom,#3f0000,#6e0000,#a80000);
   font-family:'Poppins',sans-serif;
   color:#fff;
   text-align:center;
   min-height:100vh;
   overflow-x:hidden;
+  position:relative;
 }
 
-/* GLOBAL GLOW */
-h1,h2,p,img,.modal-content,.secret button{
-  text-shadow:0 0 12px rgba(255,200,200,.6);
+/* soft glow */
+h1,h2,p,div{
+  text-shadow:0 0 12px rgba(255,200,200,.55);
 }
-
-/* INTRO LOADING */
-#intro{
-  position:fixed; inset:0; background:#3a0000;
-  display:flex; justify-content:center; align-items:center;
-  flex-direction:column; z-index:999; animation:fadeOut 1.5s ease forwards; animation-delay:2.5s;
-}
-#intro h1{font-size:3rem; animation:pulse 2s infinite;}
-@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
-@keyframes fadeOut{to{opacity:0;visibility:hidden}}
-
-/* Titles */
-h1{font-family:'Great Vibes',cursive; font-size:clamp(2.4rem,6vw,3.5rem); margin:25px 0;}
-
-/* Heart Gallery */
-.heart-gallery{
-  position:relative; width:min(360px,90vw); height:min(320px,80vw); margin:30px auto;
-}
-.heart-gallery img{
-  position:absolute; width:30%; aspect-ratio:1/1; object-fit:cover;
-  border-radius:20px; cursor:pointer; transition:.3s; box-shadow:0 0 25px rgba(255,150,150,.7);
-}
-.heart-gallery img:active{transform:scale(1.08)}
-.pos1{top:0;left:20%} .pos2{top:0;right:20%} .pos3{top:25%;left:0} .pos4{top:25%;right:0}
-.pos5{top:50%;left:20%} .pos6{top:50%;right:20%} .pos7{top:75%;left:35%}
 
 /* Falling flowers */
-.flower{position:fixed;top:-10px;font-size:22px;pointer-events:none;animation:fall linear infinite;z-index:1;}
-@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:0}}
+.flower{
+  position:fixed;
+  top:-10px;
+  font-size:22px;
+  pointer-events:none;
+  animation:fall linear infinite;
+  z-index:1;
+}
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(360deg);opacity:0}
+}
 
 /* Floating hearts */
-.heart{position:fixed;bottom:-20px;font-size:18px;animation:float 6s linear infinite;opacity:.7;pointer-events:none;}
-@keyframes float{to{transform:translateY(-110vh);opacity:0}}
-
-/* Modal */
-.modal{position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; justify-content:center; align-items:center; z-index:10; padding:15px;}
-.modal-content{background:#fff;color:#8b0000; padding:20px; border-radius:22px; max-width:520px; width:100%; max-height:90vh; overflow-y:auto;}
-.modal-content img{width:100%; border-radius:18px; margin-bottom:15px;}
-.modal-content button{margin-top:10px;background:#b00000;color:#fff;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;}
-
-/* Secret Letter */
-.secret{margin:60px 0;}
-.secret button{
-  background:#ffb3b3; color:#5a0000; border:none; padding:14px 26px;
-  border-radius:30px; font-size:1rem; cursor:pointer; box-shadow:0 0 20px rgba(255,200,200,.7);
+.heart{
+  position:fixed;
+  bottom:-20px;
+  font-size:18px;
+  animation:float 6s linear infinite;
+  opacity:.7;
+  pointer-events:none;
+  z-index:1;
 }
-#secretLetter{
-  display:none; position:fixed; inset:0; background:rgba(0,0,0,.85);
-  z-index:20; justify-content:center; align-items:center; padding:20px;
+@keyframes float{
+  to{transform:translateY(-110vh);opacity:0}
 }
-#secretContent{
-  background:#fff; color:#8b0000; padding:30px; border-radius:25px; max-width:500px;
-}
-#secretText[contenteditable="true"]{outline:2px dashed #ff6666;padding:10px;}
 
-/* Admin Panel */
-.admin{display:none;background:#fff;color:#8b0000;max-width:520px;margin:20px auto;padding:20px;border-radius:15px;}
-.admin input,.admin textarea{width:100%;padding:10px;margin:6px 0;}
-.admin button{background:#8b0000;color:#fff;border:none;padding:10px 18px;border-radius:20px;cursor:pointer;}
-.admin .row{display:flex;gap:10px;flex-wrap:wrap}
-.admin .row button{flex:1}
-.smallhint{font-size:.85rem;opacity:.85;margin:6px 0 10px}
+/* Intro title */
+.title{
+  padding:28px 14px 8px;
+  position:relative;
+  z-index:2;
+}
+.title h1{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(2.8rem,7vw,4rem);
+  margin:0;
+}
+
+/* Paper letter card */
+.paper-wrap{
+  position:relative;
+  z-index:2;
+  width:min(720px,92vw);
+  margin:16px auto 28px;
+  padding:18px;
+}
+
+.paper{
+  background:linear-gradient(180deg,#fff7f7,#fff);
+  color:#7a0000;
+  border-radius:22px;
+  padding:26px 22px;
+  box-shadow:
+    0 16px 35px rgba(0,0,0,.35),
+    0 0 35px rgba(255,160,160,.35);
+  position:relative;
+  overflow:hidden;
+}
+
+/* subtle paper texture lines */
+.paper:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,180,180,.18),
+      rgba(255,180,180,.18) 1px,
+      transparent 1px,
+      transparent 26px
+    );
+  pointer-events:none;
+}
+
+/* top ribbon */
+.ribbon{
+  width:100%;
+  height:10px;
+  background:linear-gradient(90deg,#ffb3b3,#ff6b6b,#ffb3b3);
+  border-radius:999px;
+  margin-bottom:16px;
+  box-shadow:0 0 18px rgba(255,120,120,.6);
+}
+
+/* letter content */
+.paper h2{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(2rem,5.5vw,2.6rem);
+  margin:0 0 10px;
+}
+.letter{
+  font-size:clamp(0.98rem,3.7vw,1.1rem);
+  line-height:1.9;
+  white-space:pre-wrap;
+  text-shadow:none; /* more like real ink */
+}
+
+/* handwriting feel */
+.ink{
+  background:rgba(255,230,230,.6);
+  padding:10px 12px;
+  border-radius:14px;
+  box-shadow: inset 0 0 0 1px rgba(180,0,0,.08);
+}
+
+/* signature */
+.signature{
+  margin-top:16px;
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(1.6rem,5vw,2.1rem);
+  color:#9b0000;
+}
+
+/* Admin mini toolbar */
+.adminbar{
+  display:none;
+  margin-top:14px;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.adminbar button{
+  border:none;
+  background:#8b0000;
+  color:#fff;
+  padding:10px 14px;
+  border-radius:999px;
+  cursor:pointer;
+  box-shadow:0 0 18px rgba(255,150,150,.35);
+}
+
+.smallhint{
+  font-size:.85rem;
+  opacity:.8;
+  margin-top:8px;
+}
+
+/* editable highlight */
+[contenteditable="true"]{
+  outline:2px dashed rgba(180,0,0,.35);
+  border-radius:12px;
+}
+
+/* footer spacing */
+.footer-space{height:30px}
 </style>
 </head>
 
 <body>
 
-<!-- Intro -->
-<div id="intro"><h1>For someone special ❤️</h1></div>
-
-<h1>Happy Valentine’s Day ❤️</h1>
-<p>Tap the memories 🌹</p>
-
-<div class="heart-gallery" id="gallery"></div>
-
-<!-- Secret Letter -->
-<div class="secret">
-  <button onclick="openSecret()">One last thing…</button>
+<div class="title">
+  <h1>For Nerisa ❤️</h1>
 </div>
 
-<div id="secretLetter" onclick="closeSecret()">
-  <div id="secretContent" onclick="event.stopPropagation()">
-    <h2>For You ❤️</h2>
-    <div id="secretText" contenteditable="false">
-      No matter where life takes us, I hope you always remember this — someone believes in you deeply, quietly, and completely.
+<div class="paper-wrap">
+  <div class="paper">
+    <div class="ribbon"></div>
+
+    <h2>My Love Letter</h2>
+
+    <!-- EDITABLE MESSAGE -->
+    <div class="ink">
+      <div id="mainMessage" class="letter" contenteditable="false">
+Hi baby Nerisa,
+
+Happy Valentine’s Day ❤️
+Gusto ko lang sabihin… ikaw yung pinaka greatest girlfriend ever.
+
+Thank you kasi lagi mo akong iniintindi.
+Thank you kasi kahit pagod ka, you still try your best.
+Sobrang proud ako sayo, baby.
+
+Alam ko minsan stress ka sa school, minsan overthink ka…
+Pero please remember: you are enough.
+You are strong, and you are doing so good.
+
+I’m always here for you.
+Hindi ka mag-isa. Lagi kitang support.
+I love you so much, lablab.
+
+      </div>
+
+      <div class="signature">— From James</div>
     </div>
-    <button id="saveSecretBtn" style="display:none;">Save</button>
+
+    <!-- ADMIN CONTROLS -->
+    <div class="adminbar" id="adminBar">
+      <button onclick="saveMessage()">Save Message</button>
+      <button onclick="resetMessage()">Reset</button>
+    </div>
+
+    <div class="smallhint" id="viewerHint">
+(You can just read and feel it 💗)
+    </div>
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal" id="modal" onclick="closeModal()">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <img id="modalImg" alt="memory image">
-    <h2 id="modalTitle"></h2>
-    <p id="modalText"></p>
-    <button id="deleteBtn" onclick="deleteMemory()">Delete</button>
-  </div>
-</div>
-
-<!-- Admin Panel (URL-based) -->
-<div class="admin" id="adminPanel">
-  <h3>Admin Panel</h3>
-  <div class="smallhint">
-    Upload your files to GitHub repo (images/ & music/) then paste the GitHub Pages URLs here.
-  </div>
-
-  <input type="text" id="imageUrlInput" placeholder="Image URL (required) — example: https://.../images/pic1.jpg">
-  <input type="text" id="musicUrlInput" placeholder="Music URL (optional) — example: https://.../music/song1.mp3">
-
-  <input type="text" id="titleInput" placeholder="Memory title">
-  <textarea id="textInput" placeholder="Letter / memory"></textarea>
-
-  <div class="row">
-    <button id="addMemoryBtn">Add Memory</button>
-    <button id="exportBtn">Export Memories (Copy)</button>
-  </div>
-  <div class="smallhint">
-    After exporting: paste the JSON into DEFAULT_MEMORIES in this file, commit to GitHub, then everyone sees it.
-  </div>
-</div>
-
-<audio id="musicPlayer"></audio>
+<div class="footer-space"></div>
 
 <script>
-// DOM references
-const gallery = document.getElementById("gallery");
-const modal = document.getElementById("modal");
-const modalImg = document.getElementById("modalImg");
-const modalTitle = document.getElementById("modalTitle");
-const modalText = document.getElementById("modalText");
-const deleteBtn = document.getElementById("deleteBtn");
-
-const imageUrlInput = document.getElementById("imageUrlInput");
-const musicUrlInput = document.getElementById("musicUrlInput");
-const titleInput = document.getElementById("titleInput");
-const textInput = document.getElementById("textInput");
-const addMemoryBtn = document.getElementById("addMemoryBtn");
-const exportBtn = document.getElementById("exportBtn");
-
-const secretText = document.getElementById("secretText");
-const saveSecretBtn = document.getElementById("saveSecretBtn");
-const musicPlayer = document.getElementById("musicPlayer");
-
-/* ✅ GLOBAL MEMORIES: paste exported JSON here to make it visible to everyone */
-const DEFAULT_MEMORIES = [
-  // Example:
-  // {
-  //   img: "https://jamescarpio.github.io/valentine_site/images/pic1.jpg",
-  //   music: "https://jamescarpio.github.io/valentine_site/music/song1.mp3",
-  //   title: "First Memory",
-  //   text: "Your letter here..."
-  // }
-];
-
-// If local exists, use it; else use global defaults
-let memories = JSON.parse(localStorage.getItem("memories")) || DEFAULT_MEMORIES;
+const mainMessage = document.getElementById("mainMessage");
+const adminBar = document.getElementById("adminBar");
+const viewerHint = document.getElementById("viewerHint");
 
 let adminMode = false;
-let currentIndex = null;
 
-const pos = ["pos1","pos2","pos3","pos4","pos5","pos6","pos7"];
-
-/* Render gallery */
-function render(){
-  gallery.innerHTML = "";
-  memories.slice(0,7).forEach((m,i)=>{
-    const img = document.createElement("img");
-    img.src = m.img;
-    img.className = pos[i];
-    img.onclick = ()=>openModal(i);
-    gallery.appendChild(img);
-  });
-}
-render();
-
-/* Modal */
-function openModal(i){
-  const m = memories[i];
-  currentIndex = i;
-
-  modalImg.src = m.img;
-  modalTitle.innerText = m.title || "";
-  modalText.innerText = m.text || "";
-
-  modal.style.display = "flex";
-  deleteBtn.style.display = adminMode ? "inline-block" : "none";
-
-  if(m.music){
-    musicPlayer.src = m.music;
-    musicPlayer.play().catch(()=>{});
-  }
+// Load saved message (local)
+const savedMsg = localStorage.getItem("valentine_main_message");
+if(savedMsg){
+  mainMessage.innerText = savedMsg;
 }
 
-function closeModal(){
-  modal.style.display = "none";
-  musicPlayer.pause();
-  musicPlayer.currentTime = 0;
-}
-
-function deleteMemory(){
-  if(!adminMode) return;
-  if(confirm("Delete this memory?")){
-    memories.splice(currentIndex, 1);
-    localStorage.setItem("memories", JSON.stringify(memories));
-    closeModal();
-    render();
-  }
-}
-
-/* Admin add memory (URL-based) */
-addMemoryBtn.addEventListener("click", ()=>{
-  const imgUrl = imageUrlInput.value.trim();
-  const musicUrl = musicUrlInput.value.trim();
-  const title = titleInput.value.trim();
-  const text = textInput.value.trim();
-
-  if(!imgUrl) return alert("Paste an IMAGE URL first.");
-
-  memories.push({
-    img: imgUrl,
-    music: musicUrl || null,
-    title: title || "Memory",
-    text: text || ""
-  });
-
-  localStorage.setItem("memories", JSON.stringify(memories));
-  render();
-
-  imageUrlInput.value="";
-  musicUrlInput.value="";
-  titleInput.value="";
-  textInput.value="";
-  alert("Added locally! Click Export to make it global for everyone (paste into DEFAULT_MEMORIES + commit).");
-});
-
-/* Export memories */
-exportBtn.addEventListener("click", exportMemories);
-
-function exportMemories(){
-  const data = JSON.stringify(memories, null, 2);
-
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(data).then(()=>{
-      alert("Copied! Paste this into DEFAULT_MEMORIES in index.html, commit to GitHub.");
-    }).catch(()=>{
-      prompt("Copy this JSON:", data);
-    });
-  } else {
-    prompt("Copy this JSON:", data);
-  }
-}
-
-/* Secret letter */
-function openSecret(){document.getElementById("secretLetter").style.display="flex";}
-function closeSecret(){document.getElementById("secretLetter").style.display="none";}
-
-saveSecretBtn.addEventListener("click", ()=>{
-  localStorage.setItem("secretLetter", secretText.innerText);
-  alert("Secret letter saved (local). If you want it global, edit the HTML text itself and commit.");
-});
-
-// load saved secret letter (local)
-const savedSecret = localStorage.getItem("secretLetter");
-if(savedSecret){ secretText.innerText = savedSecret; }
-
-/* Admin access */
-document.addEventListener("keydown", (e)=>{
-  if(e.key.toLowerCase()==="a"){
+// Admin access
+document.addEventListener("keydown", (e) => {
+  if(e.key.toLowerCase() === "a"){
     const pass = prompt("Admin password:");
-    if(pass==="admin123"){
+    if(pass === "admin123"){
       adminMode = true;
-      document.getElementById("adminPanel").style.display="block";
-      secretText.contentEditable="true";
-      saveSecretBtn.style.display="inline-block";
-      alert("Admin mode enabled!");
+      mainMessage.contentEditable = "true";
+      adminBar.style.display = "flex";
+      viewerHint.style.display = "none";
+      alert("Admin mode enabled! You can edit the message.");
     }
   }
 });
 
-/* Effects */
-setInterval(()=>{
-  const f = document.createElement("div");
-  f.className="flower";
-  f.innerText = Math.random()>.5 ? "🌹" : "🌸";
-  f.style.left = Math.random()*100 + "vw";
-  f.style.animationDuration = (4+Math.random()*4) + "s";
-  document.body.appendChild(f);
-  setTimeout(()=>f.remove(), 8000);
-}, 500);
+function saveMessage(){
+  localStorage.setItem("valentine_main_message", mainMessage.innerText);
+  alert("Saved (on this device/browser). If you want it global for everyone, edit the message in index.html and commit to GitHub.");
+}
 
+function resetMessage(){
+  if(!confirm("Reset to original message?")) return;
+  localStorage.removeItem("valentine_main_message");
+  location.reload();
+}
+
+/* Falling flowers */
 setInterval(()=>{
-  const h = document.createElement("div");
+  const f=document.createElement("div");
+  f.className="flower";
+  f.innerText=Math.random()>.5?"🌹":"🌸";
+  f.style.left=Math.random()*100+"vw";
+  f.style.animationDuration=(4+Math.random()*4)+"s";
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),8000);
+},500);
+
+/* Floating hearts */
+setInterval(()=>{
+  const h=document.createElement("div");
   h.className="heart";
   h.innerText="💗";
-  h.style.left = Math.random()*100 + "vw";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(4+Math.random()*4)+"s";
   document.body.appendChild(h);
-  setTimeout(()=>h.remove(), 8000);
-}, 800);
+  setTimeout(()=>h.remove(),8000);
+},800);
 </script>
+
 </body>
 </html>
